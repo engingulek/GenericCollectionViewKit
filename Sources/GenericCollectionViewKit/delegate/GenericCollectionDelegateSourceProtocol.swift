@@ -13,8 +13,7 @@ import Foundation
 public protocol GenericCollectionDelegateSourceProtocol {
     
     /// Called when a collection view item is selected.
-    /// - Parameter indexPath: The index path of the selected item.
-    func didSelectItem(at indexPath: IndexPath)
+    func didSelectItem(section:Int,item:Int)
     
     ///Called when the scroll view scrolls, indicating whether the end of the page is reached.
     /// - Parameter endOfPage: True if the last item of the last section is visible, false otherwise.
@@ -30,7 +29,7 @@ public extension GenericCollectionDelegateSourceProtocol {
     
     /// Default empty implementation for item selection.
     /// - Parameter indexPath: The index path of the selected item.
-    func didSelectItem(at indexPath: IndexPath) { }
+    func didSelectItem(section:Int,item:Int) { }
 }
 
 // MARK: - Generic Delegate Class
@@ -53,7 +52,7 @@ public class GenericCollectionDelegate<Source: GenericCollectionDelegateSourcePr
     ///   - indexPath: The index path of the selected item.
     public func collectionView(_ collectionView: UICollectionView,
                                didSelectItemAt indexPath: IndexPath) {
-        source.didSelectItem(at: indexPath)
+        source.didSelectItem(section: indexPath.section, item: indexPath.item)
     }
     
     ///Called when a cell is about to be displayed. Detects if the user reached the end of the collection view.
