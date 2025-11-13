@@ -232,9 +232,9 @@ let layout = layoutProvider.createLayout()
 let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 
 ```
+## Tutorial Video
 
-
-
+<video width="320" height="140" src = "https://github.com/user-attachments/assets/8f652c61-6440-4757-8431-025c4549274d"> 
 
 ## 🧰 Installation
 ```swift
