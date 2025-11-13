@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 //MARK: GenericCollectionViewDataSourceProtcol
-/// B2-C1 English: A generic protocol for providing data to a UICollectionView.
+/// A generic protocol for providing data to a UICollectionView.
 /// It defines the required methods for sections, items, and optional section headers with buttons.
 public protocol GenericCollectionDataSourceProtocol {
     /// Represents the type of data model that each collection view cell will display.

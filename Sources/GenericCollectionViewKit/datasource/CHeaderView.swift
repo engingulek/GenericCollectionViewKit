@@ -98,7 +98,7 @@ extension CHeaderView {
         buttonStack.distribution = .fillProportionally
         buttonStack.translatesAutoresizingMaskIntoConstraints = false
         
-        // B2-C1 English: Single separator example
+        // Single separator example
         let separator = UIView()
         separator.backgroundColor = UIColor(white: 0.8, alpha: 1.0)
         separator.translatesAutoresizingMaskIntoConstraints = false
@@ -140,7 +140,7 @@ extension CHeaderView {
         addSubview(mainStack)
         self.mainStack = mainStack
         
-        // B2-C1 English: Pin main stack to the edges of the header with some padding.
+        // Pin main stack to the edges of the header with some padding.
         NSLayoutConstraint.activate([
             mainStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             mainStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
