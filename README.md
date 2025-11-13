@@ -234,7 +234,18 @@ let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout
 ```
 ## Tutorial Video
 
-<video width="320" height="140" src = "https://github.com/user-attachments/assets/8f652c61-6440-4757-8431-025c4549274d"> 
+
+<table>
+  <tr>
+    <td>
+     <video width="320" height="140" src = "https://github.com/user-attachments/assets/8f652c61-6440-4757-8431-025c4549274d">
+    </td>
+    <td>
+    <video width="320" height="140" src = "https://github.com/user-attachments/assets/483a0e53-5a24-4890-af49-0425c015d90c">
+    </td>
+  </tr>
+</table>
+
 
 ## 🧰 Installation
 ```swift
