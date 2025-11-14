@@ -248,6 +248,7 @@ let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout
 
 
 ## 🧰 Installation
+
 ```swift
 
 dependencies: [
