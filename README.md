@@ -249,8 +249,10 @@ let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout
 
 ## 🧰 Installation
 ```swift
+
 dependencies: [
     .package(url: "https://github.com/yourusername/GenericCollectionView.git", from: "0.0.2")
 ]
+
 ```
 
