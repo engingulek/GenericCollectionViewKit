@@ -8,13 +8,14 @@
 import Foundation
 
 public enum SectionSizeType {
-    case large, medium, small
+    case large, medium, small,empty
     
     var size: CGFloat {
         switch self {
         case .large: return 25
         case .medium: return 23
         case .small: return 20
+        case .empty: return 0
         }
     }
 }
