@@ -139,7 +139,7 @@ extension CHeaderView {
                 separator.widthAnchor.constraint(equalToConstant: 1).isActive = true
                 separator.heightAnchor.constraint(equalToConstant: 18).isActive = true
                 
-                let button = UIButton(type: .system)
+                let button = UIButton(type: .custom)
                 button.setTitle(model.title, for: .normal)
                 button.setTitleColor(item.buttonColor.uiColor, for: .normal)
                 button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
