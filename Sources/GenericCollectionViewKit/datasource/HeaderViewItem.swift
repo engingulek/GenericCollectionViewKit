@@ -10,6 +10,7 @@ import UIKit
 public enum TitleIconType {
     case systemImage(String)
     case imageAsstes(String)
+   
 }
 
 public struct TitleIcon {
@@ -30,15 +31,15 @@ public struct TitleIcon {
 public struct HeaderViewItem {
 
     public let title: String
-    public let icon: TitleIcon?
+    public var icon: TitleIcon? = nil
     public let sizeType: SectionSizeType
-    public let buttonTypes: [TitleForSectionButtonType]?
+    public var buttonTypes: [TitleForSectionButtonType] = []
 
     public init(
         title: String,
-        icon: TitleIcon?,
+        icon: TitleIcon? = nil,
         sizeType: SectionSizeType,
-        buttonTypes: [TitleForSectionButtonType]?
+        buttonTypes: [TitleForSectionButtonType] = []
     ) {
         self.title = title
         self.icon = icon

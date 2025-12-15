@@ -100,7 +100,7 @@ extension CHeaderView {
         
         //Determine if the header should be visible based on title and buttons.
         let hasTitle = !(item.title.isEmpty)
-        let hasButtons = !(item.buttonTypes?.isEmpty ?? true)
+        let hasButtons = !(item.buttonTypes.isEmpty)
         let shouldShowHeader = hasTitle || hasButtons
         
         if !shouldShowHeader {
@@ -129,7 +129,8 @@ extension CHeaderView {
         
         // Create buttons and separators for each type in cellItem.buttonTypes
         
-        if let types = item.buttonTypes, !types.isEmpty {
+        if  !item.buttonTypes.isEmpty {
+            let types = item.buttonTypes
             self.buttonTypes = types
             for (index, model) in types.enumerated() {
                 let separator = UIView()
