@@ -42,10 +42,7 @@ public protocol GenericCollectionDataSourceProtocol {
     /// Returns the title and optional buttons for a section header.
     /// - Parameter section: The index of the section.
     /// - Returns: A tuple containing the title, size type, and optional button types.
-    func titleForSection(at section: Int) -> (title: String,
-                                              titleIcon:TitleIcon,
-                                              sizeType: SectionSizeType,
-                                              buttonType: [TitleForSectionButtonType]?)
+    func titleForSection(at section: Int) -> HeaderViewItem
     
     /// Handles the action when a section header button is tapped.
     /// - Parameters:
@@ -126,13 +123,15 @@ public class GenericCollectionDataSource<Source: GenericCollectionDataSourceProt
         }
         
         let item = source.titleForSection(at: indexPath.section)
-        
-        header.configure(
-            with: (title: item.title,icon:item.titleIcon, sizeType: item.sizeType, buttonTypes: item.buttonType)
-        ) { [weak self] tappedType in
-            guard let self else { return }
-            source.onTappedTitleButton(buttonType: tappedType, section: indexPath.section)
-        }
+        header.configure(with: .init(
+            title: item.title,
+            icon: item.icon,
+            sizeType: item.sizeType,
+            buttonTypes: item.buttonTypes)) { [weak self] tappedType in
+                guard let self else { return }
+                source.onTappedTitleButton(buttonType: tappedType, section: indexPath.section)
+            }
+      
         
         return header
     }

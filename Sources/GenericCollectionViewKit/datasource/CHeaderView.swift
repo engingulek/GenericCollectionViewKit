@@ -78,32 +78,29 @@ extension CHeaderView {
     /* Configures the header view with title, optional buttons, and tap callback.
      Dynamically creates stack views and separators.*/
     public func configure(
-        with cellItem: (title: String,
-                        icon:TitleIcon?,
-                        sizeType: SectionSizeType,
-                        buttonTypes: [TitleForSectionButtonType]?),
+        with item: HeaderViewItem,
         onTap: @escaping (TitleForSectionButtonType) -> Void
     ) {
         self.onTap = onTap
-        titleLabel.text = cellItem.title
-        titleLabel.font = .boldSystemFont(ofSize: cellItem.sizeType.size)
+        titleLabel.text = item.title
+        titleLabel.font = .boldSystemFont(ofSize: item.sizeType.size)
         
-        if let icon = cellItem.icon {
+        if let icon = item.icon {
             switch icon.image {
             case .systemImage(let name):
                 titleIcon.image = UIImage(systemName: name)
             case .imageAsstes(let name):
                 titleIcon.image = UIImage(named: name)
             }
-            titleIcon.tintColor = icon.tintColor
+            titleIcon.tintColor = icon.tintColor.uiColor
             titleIcon.isHidden = false
         } else {
             titleIcon.isHidden = true
         }
         
         //Determine if the header should be visible based on title and buttons.
-        let hasTitle = !(cellItem.title.isEmpty)
-        let hasButtons = !(cellItem.buttonTypes?.isEmpty ?? true)
+        let hasTitle = !(item.title.isEmpty)
+        let hasButtons = !(item.buttonTypes?.isEmpty ?? true)
         let shouldShowHeader = hasTitle || hasButtons
         
         if !shouldShowHeader {
@@ -132,7 +129,7 @@ extension CHeaderView {
         
         // Create buttons and separators for each type in cellItem.buttonTypes
         
-        if let types = cellItem.buttonTypes, !types.isEmpty {
+        if let types = item.buttonTypes, !types.isEmpty {
             self.buttonTypes = types
             for (index, model) in types.enumerated() {
                 let separator = UIView()

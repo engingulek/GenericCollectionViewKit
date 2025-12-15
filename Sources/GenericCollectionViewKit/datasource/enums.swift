@@ -35,12 +35,7 @@ public enum TitleForSectionButtonType {
 }
 
 
-public enum TitleIconType {
-    case systemImage(String)
-    case imageAsstes(String)
-}
 
-public struct TitleIcon {
-    let image:TitleIconType
-    let tintColor:UIColor
-}
+
+
+
