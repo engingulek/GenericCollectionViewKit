@@ -141,7 +141,7 @@ extension CHeaderView {
                 
                 let button = UIButton(type: .system)
                 button.setTitle(model.title, for: .normal)
-                button.setTitleColor(.black, for: .normal)
+                button.setTitleColor(item.buttonColor.uiColor, for: .normal)
                 button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
                 button.tag = index
                 button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)

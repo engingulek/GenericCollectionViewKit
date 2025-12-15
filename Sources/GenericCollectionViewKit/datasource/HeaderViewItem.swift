@@ -13,7 +13,7 @@ public enum TitleIconType {
    
 }
 
-public struct TitleIcon {
+public struct HeaderIcon {
 
     public let image: TitleIconType
     public let tintColor: HeaderItemColor
@@ -27,23 +27,29 @@ public struct TitleIcon {
     }
 }
 
+
+
+
 //MARK: HeaderViewItem
 public struct HeaderViewItem {
 
     public let title: String
-    public var icon: TitleIcon? = nil
+    public var icon: HeaderIcon? = nil
     public let sizeType: SectionSizeType
+    public var buttonColor:HeaderItemColor = .primary
     public var buttonTypes: [TitleForSectionButtonType] = []
 
     public init(
         title: String,
-        icon: TitleIcon? = nil,
+        icon: HeaderIcon? = nil,
         sizeType: SectionSizeType,
+        buttonColor :HeaderItemColor = .primary,
         buttonTypes: [TitleForSectionButtonType] = []
     ) {
         self.title = title
         self.icon = icon
         self.sizeType = sizeType
         self.buttonTypes = buttonTypes
+        self.buttonColor = buttonColor
     }
 }
