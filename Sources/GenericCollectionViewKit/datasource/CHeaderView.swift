@@ -12,7 +12,7 @@ public final class CHeaderView: UICollectionReusableView {
     // MARK: - Title Label
     /* A UILabel used to display the title of the section header.
      It is styled with bold font and truncated if too long.*/
-    private let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.font = .boldSystemFont(ofSize: 20)
@@ -22,6 +22,17 @@ public final class CHeaderView: UICollectionReusableView {
         lbl.setContentHuggingPriority(.defaultLow, for: .horizontal)
         lbl.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return lbl
+    }()
+    
+    // MARK: - Title Icon
+    /* A UIImageView used to display an optional iconnext to the section header title.
+     Supports both system images and asset-based images.Hidden by default when no icon is provided. */
+    private lazy var titleIcon: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.isHidden = true
+        return imageView
     }()
     
     // MARK: - Button and Stack References
@@ -68,6 +79,7 @@ extension CHeaderView {
      Dynamically creates stack views and separators.*/
     public func configure(
         with cellItem: (title: String,
+                        icon:TitleIcon?,
                         sizeType: SectionSizeType,
                         buttonTypes: [TitleForSectionButtonType]?),
         onTap: @escaping (TitleForSectionButtonType) -> Void
@@ -75,6 +87,19 @@ extension CHeaderView {
         self.onTap = onTap
         titleLabel.text = cellItem.title
         titleLabel.font = .boldSystemFont(ofSize: cellItem.sizeType.size)
+        
+        if let icon = cellItem.icon {
+            switch icon.image {
+            case .systemImage(let name):
+                titleIcon.image = UIImage(systemName: name)
+            case .imageAsstes(let name):
+                titleIcon.image = UIImage(named: name)
+            }
+            titleIcon.tintColor = icon.tintColor
+            titleIcon.isHidden = false
+        } else {
+            titleIcon.isHidden = true
+        }
         
         //Determine if the header should be visible based on title and buttons.
         let hasTitle = !(cellItem.title.isEmpty)
@@ -130,8 +155,8 @@ extension CHeaderView {
         
         self.buttonStack = buttonStack
         
-        //  Main stack contains the title label and button stack, horizontally aligned.
-        let mainStack = UIStackView(arrangedSubviews: [titleLabel, buttonStack])
+        //  Main stack contains the icon title label and button stack, horizontally aligned.
+        let mainStack = UIStackView(arrangedSubviews: [titleIcon,titleLabel, buttonStack])
         mainStack.axis = .horizontal
         mainStack.alignment = .center
         mainStack.spacing = 8
@@ -146,6 +171,13 @@ extension CHeaderView {
             mainStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             mainStack.topAnchor.constraint(equalTo: topAnchor),
             mainStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+        
+        
+        NSLayoutConstraint.activate([
+            titleIcon.heightAnchor.constraint(equalToConstant: 20),
+            titleIcon.widthAnchor.constraint(equalToConstant: 20)
+           
         ])
         
         // Set content hugging and compression priorities to ensure proper layout behavior.

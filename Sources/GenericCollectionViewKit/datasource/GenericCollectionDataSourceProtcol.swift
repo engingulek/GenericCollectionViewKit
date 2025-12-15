@@ -43,6 +43,7 @@ public protocol GenericCollectionDataSourceProtocol {
     /// - Parameter section: The index of the section.
     /// - Returns: A tuple containing the title, size type, and optional button types.
     func titleForSection(at section: Int) -> (title: String,
+                                              titleIcon:TitleIcon,
                                               sizeType: SectionSizeType,
                                               buttonType: [TitleForSectionButtonType]?)
     
@@ -127,7 +128,7 @@ public class GenericCollectionDataSource<Source: GenericCollectionDataSourceProt
         let item = source.titleForSection(at: indexPath.section)
         
         header.configure(
-            with: (title: item.title, sizeType: item.sizeType, buttonTypes: item.buttonType)
+            with: (title: item.title,icon:item.titleIcon, sizeType: item.sizeType, buttonTypes: item.buttonType)
         ) { [weak self] tappedType in
             guard let self else { return }
             source.onTappedTitleButton(buttonType: tappedType, section: indexPath.section)

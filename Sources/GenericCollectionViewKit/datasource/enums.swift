@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 public enum SectionSizeType {
     case large, medium, small,empty
@@ -31,4 +32,15 @@ public enum TitleForSectionButtonType {
             return title
         }
     }
+}
+
+
+public enum TitleIconType {
+    case systemImage(String)
+    case imageAsstes(String)
+}
+
+public struct TitleIcon {
+    let image:TitleIconType
+    let tintColor:UIColor
 }
