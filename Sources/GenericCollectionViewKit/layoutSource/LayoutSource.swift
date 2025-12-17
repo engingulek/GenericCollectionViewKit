@@ -15,6 +15,7 @@ import Foundation
 public enum DimensionType {
     case fractional
     case absolute
+    case estimated
     case none
 }
 

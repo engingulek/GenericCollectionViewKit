@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 public enum SectionSizeType {
     case large, medium, small,empty
@@ -32,3 +33,9 @@ public enum TitleForSectionButtonType {
         }
     }
 }
+
+
+
+
+
+
