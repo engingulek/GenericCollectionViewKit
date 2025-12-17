@@ -43,70 +43,105 @@ public class GenericCollectionLayoutProvider<Source: GenericCollectionLayoutProv
     @MainActor
     public func createLayout() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ in
-        guard let self = self else { return nil }
+            guard let self = self else { return nil }
             
-        // Retrieve layout configuration for the current section
-        let layoutSource = self.source.layout(for: sectionIndex)
+            // Retrieve layout configuration for the current section
+            let layoutSource = self.source.layout(for: sectionIndex)
             
-        // MARK: Item Configuration
-        /// Define how individual items are sized (fractional or absolute).
+            // MARK: Item Configuration
+            /// Define how individual items are sized (fractional , absolute or estimated).
             
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: layoutSource.itemSize.width.type == .fractional
-            ? .fractionalWidth(layoutSource.itemSize.width.value)
-            : .absolute(layoutSource.itemSize.width.value),
-                heightDimension: layoutSource.itemSize.height.type == .fractional
-            ? .fractionalHeight(layoutSource.itemSize.height.value)
-            : .absolute(layoutSource.itemSize.height.value))
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: makeLayoutDimension(
+                    type: layoutSource.itemSize.width.type,
+                    value: layoutSource.itemSize.width.value,
+                    isWidth: true
+                ),
+                heightDimension: makeLayoutDimension(
+                    type: layoutSource.itemSize.height.type,
+                    value: layoutSource.itemSize.height.value,
+                    isWidth: false
+                )
+            )
             
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
             
-        // MARK: Group Configuration
-        /// Define the layout and size of item groups (either horizontal or vertical).
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: layoutSource.groupSize.width.type == .absolute
-            ? .absolute(layoutSource.groupSize.width.value)
-            : .fractionalWidth(layoutSource.groupSize.width.value),
-            heightDimension: layoutSource.groupSize.height.type == .absolute
-            ? .absolute(layoutSource.groupSize.height.value)
-            : .fractionalHeight(layoutSource.groupSize.height.value))
             
-        let group: NSCollectionLayoutGroup
-        if layoutSource.groupOrientation == .horizontal {
-            group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        } else {
-            group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+            // MARK: Group Configuration
+            /// Define the layout and size of item groups (either horizontal or vertical).
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: makeLayoutDimension(
+                    type: layoutSource.groupSize.width.type,
+                    value: layoutSource.groupSize.width.value,
+                    isWidth: true
+                ),
+                heightDimension: makeLayoutDimension(
+                    type: layoutSource.groupSize.height.type,
+                    value: layoutSource.groupSize.height.value,
+                    isWidth: false
+                )
+            )
+            
+            
+            let group: NSCollectionLayoutGroup
+            if layoutSource.groupOrientation == .horizontal {
+                group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            } else {
+                group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+            }
+            
+            group.interItemSpacing = .fixed(layoutSource.interItemSpacing)
+            
+            // MARK: Section Configuration
+            /// Defines how groups are arranged within each section, including
+            /// scrolling behavior, content insets, spacing, and supplementary views.
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = layoutSource.scrollDirection == .horizontal ? .continuous : .none
+            section.contentInsets = NSDirectionalEdgeInsets(
+                top: layoutSource.sectionInsets.top,
+                leading: layoutSource.sectionInsets.leading,
+                bottom: layoutSource.sectionInsets.bottom,
+                trailing: layoutSource.sectionInsets.trailing
+            )
+            section.interGroupSpacing = layoutSource.interGroupSpacing
+            
+            // MARK: Header Configuration
+            /// Adds a header supplementary view at the top of each section.
+            let headerSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .absolute(40)
+            )
+            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: headerSize,
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top
+            )
+            section.boundarySupplementaryItems = [sectionHeader]
+            
+            return section
         }
-        
-        group.interItemSpacing = .fixed(layoutSource.interItemSpacing)
-            
-        // MARK: Section Configuration
-        /// Defines how groups are arranged within each section, including
-        /// scrolling behavior, content insets, spacing, and supplementary views.
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = layoutSource.scrollDirection == .horizontal ? .continuous : .none
-        section.contentInsets = NSDirectionalEdgeInsets(
-            top: layoutSource.sectionInsets.top,
-            leading: layoutSource.sectionInsets.leading,
-            bottom: layoutSource.sectionInsets.bottom,
-            trailing: layoutSource.sectionInsets.trailing
-        )
-        section.interGroupSpacing = layoutSource.interGroupSpacing
-            
-        // MARK: Header Configuration
-        /// Adds a header supplementary view at the top of each section.
-        let headerSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(40)
-        )
-        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: headerSize,
-            elementKind: UICollectionView.elementKindSectionHeader,
-            alignment: .top
-        )
-        section.boundarySupplementaryItems = [sectionHeader]
-            
-        return section
     }
+    
+    @MainActor
+    func makeLayoutDimension(
+        type: DimensionType,
+        value: CGFloat,
+        isWidth: Bool
+    ) -> NSCollectionLayoutDimension {
+        switch type {
+        case .fractional:
+            return isWidth
+            ? .fractionalWidth(value)
+            : .fractionalHeight(value)
+            
+        case .absolute:
+            return .absolute(value)
+            
+        case .estimated:
+            return .estimated(value)
+        case .none:
+            return .absolute(0)
+        }
     }
+    
 }

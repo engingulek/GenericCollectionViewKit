@@ -12,7 +12,7 @@ public final class CHeaderView: UICollectionReusableView {
     // MARK: - Title Label
     /* A UILabel used to display the title of the section header.
      It is styled with bold font and truncated if too long.*/
-    private let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.font = .boldSystemFont(ofSize: 20)
@@ -22,6 +22,17 @@ public final class CHeaderView: UICollectionReusableView {
         lbl.setContentHuggingPriority(.defaultLow, for: .horizontal)
         lbl.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return lbl
+    }()
+    
+    // MARK: - Title Icon
+    /* A UIImageView used to display an optional iconnext to the section header title.
+     Supports both system images and asset-based images.Hidden by default when no icon is provided. */
+    private lazy var titleIcon: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.isHidden = true
+        return imageView
     }()
     
     // MARK: - Button and Stack References
@@ -67,18 +78,29 @@ extension CHeaderView {
     /* Configures the header view with title, optional buttons, and tap callback.
      Dynamically creates stack views and separators.*/
     public func configure(
-        with cellItem: (title: String,
-                        sizeType: SectionSizeType,
-                        buttonTypes: [TitleForSectionButtonType]?),
+        with item: HeaderViewItem,
         onTap: @escaping (TitleForSectionButtonType) -> Void
     ) {
         self.onTap = onTap
-        titleLabel.text = cellItem.title
-        titleLabel.font = .boldSystemFont(ofSize: cellItem.sizeType.size)
+        titleLabel.text = item.title
+        titleLabel.font = .boldSystemFont(ofSize: item.sizeType.size)
+        
+        if let icon = item.icon {
+            switch icon.image {
+            case .systemImage(let name):
+                titleIcon.image = UIImage(systemName: name)
+            case .imageAsstes(let name):
+                titleIcon.image = UIImage(named: name)
+            }
+            titleIcon.tintColor = icon.tintColor.uiColor
+            titleIcon.isHidden = false
+        } else {
+            titleIcon.isHidden = true
+        }
         
         //Determine if the header should be visible based on title and buttons.
-        let hasTitle = !(cellItem.title.isEmpty)
-        let hasButtons = !(cellItem.buttonTypes?.isEmpty ?? true)
+        let hasTitle = !(item.title.isEmpty)
+        let hasButtons = !(item.buttonTypes.isEmpty)
         let shouldShowHeader = hasTitle || hasButtons
         
         if !shouldShowHeader {
@@ -107,7 +129,8 @@ extension CHeaderView {
         
         // Create buttons and separators for each type in cellItem.buttonTypes
         
-        if let types = cellItem.buttonTypes, !types.isEmpty {
+        if  !item.buttonTypes.isEmpty {
+            let types = item.buttonTypes
             self.buttonTypes = types
             for (index, model) in types.enumerated() {
                 let separator = UIView()
@@ -119,6 +142,7 @@ extension CHeaderView {
                 let button = UIButton(type: .system)
                 button.setTitle(model.title, for: .normal)
                 button.setTitleColor(.black, for: .normal)
+              
                 button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
                 button.tag = index
                 button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
@@ -130,8 +154,8 @@ extension CHeaderView {
         
         self.buttonStack = buttonStack
         
-        //  Main stack contains the title label and button stack, horizontally aligned.
-        let mainStack = UIStackView(arrangedSubviews: [titleLabel, buttonStack])
+        //  Main stack contains the icon title label and button stack, horizontally aligned.
+        let mainStack = UIStackView(arrangedSubviews: [titleIcon,titleLabel, buttonStack])
         mainStack.axis = .horizontal
         mainStack.alignment = .center
         mainStack.spacing = 8
@@ -146,6 +170,13 @@ extension CHeaderView {
             mainStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             mainStack.topAnchor.constraint(equalTo: topAnchor),
             mainStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+        
+        
+        NSLayoutConstraint.activate([
+            titleIcon.heightAnchor.constraint(equalToConstant: 20),
+            titleIcon.widthAnchor.constraint(equalToConstant: 20)
+           
         ])
         
         // Set content hugging and compression priorities to ensure proper layout behavior.
