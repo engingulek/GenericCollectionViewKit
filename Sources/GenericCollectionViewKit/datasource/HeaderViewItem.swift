@@ -7,13 +7,13 @@
 import UIKit
 
 //MARK: TitleIconType
-public enum TitleIconType : Sendable{
+public enum TitleIconType {
     case systemImage(String)
     case imageAsstes(String)
    
 }
 
-public struct HeaderIcon : Sendable{
+public struct HeaderIcon {
 
     public let image: TitleIconType
     public let tintColor: HeaderItemColor
@@ -31,7 +31,7 @@ public struct HeaderIcon : Sendable{
 
 
 //MARK: HeaderViewItem
-public struct HeaderViewItem : Sendable{
+public struct HeaderViewItem{
 
     public let title: String
     public var icon: HeaderIcon? = nil

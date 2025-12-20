@@ -7,7 +7,7 @@
 import UIKit
 
 // MARK: - HeaderItemColor
-public enum HeaderItemColor : Sendable {
+public enum HeaderItemColor  {
     case primary
     case secondary
     case danger
