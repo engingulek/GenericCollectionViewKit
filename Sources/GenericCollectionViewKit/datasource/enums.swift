@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-public enum SectionSizeType {
+public enum SectionSizeType : Sendable {
     case large, medium, small,empty
     
     var size: CGFloat {
@@ -21,7 +21,7 @@ public enum SectionSizeType {
     }
 }
 
-public enum TitleForSectionButtonType {
+public enum TitleForSectionButtonType : Sendable {
     case allList
     case custom(String)
     var title: String {

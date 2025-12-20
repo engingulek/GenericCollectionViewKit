@@ -12,7 +12,7 @@ import Foundation
 // MARK: - DimensionType
 /// Represents how a size dimension (width or height) is defined.
 /// It can be fractional (relative to its container), absolute (fixed value), or none (no defined size).
-public enum DimensionType {
+public enum DimensionType : Sendable{
     case fractional
     case absolute
     case estimated
@@ -22,7 +22,7 @@ public enum DimensionType {
 // MARK: - SizeInfo
 /// Encapsulates the width and height of an element using a specific `DimensionType` and a numeric value.
 /// It allows flexible sizing for compositional layouts.
-public struct SizeInfo {
+public struct SizeInfo : Sendable{
     
     ///Initializes a new SizeInfo instance with specified width and height configurations.
     /// - Parameters:
@@ -43,7 +43,7 @@ public struct SizeInfo {
 
 // MARK: - ScrollDirection
 /// Defines the direction in which the collection view scrolls — either horizontally or vertically.
-public enum ScrollDirection {
+public enum ScrollDirection : Sendable{
     case horizontal
     case vertical
 }
@@ -51,7 +51,7 @@ public enum ScrollDirection {
 // MARK: - LayoutSource
 /// A configuration model for creating compositional layouts in a collection view.
 /// It defines item and group sizes, layout orientation, spacing, and scroll direction.
-public struct LayoutSource {
+public struct LayoutSource : Sendable {
     
     /// Initializes a new layout configuration with the given parameters.
     /// - Parameters:
