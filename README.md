@@ -26,17 +26,50 @@ It provides a **generic**, **type-safe**, and **highly customizable** way to man
 ---
 
 ## 📜 CHeaderView
-A **customizable section header** that supports a **title** and **optional action buttons**, making it easy to display section information dynamically.  
+A **customizable section header** that supports a **title** ,**optional action buttons** and **optional icon for title**, making it easy to display section information dynamically.  
 - A dynamic title (bold, resizable font)
+- Optiona left-aligned icon
 - Optional right-aligned buttons (e.g., “All List”, custom actions)
 - Auto-layout with UIStackView
 - Button tap callback closure
+
+  ### HeaderIcon
+ Defines the icon displayed next to the title.
 ```swift
-  header.configure(
-    with: (title: "Recommended", sizeType: .medium, buttonTypes: [.allList, .custom("More")])
-) { buttonType in
-    print("Tapped:", buttonType)
+
+public enum TitleIconType {
+    case systemImage(String) // SF Symbols
+    case imageAsstes(String) // Asset Catalog images
 }
+
+public struct HeaderIcon {
+    public let image: TitleIconType
+    public let tintColor: HeaderItemColor
+}
+
+```
+
+ ### HeaderViewItem
+ The main configuration model for CHeaderView.
+```swift
+public struct HeaderViewItem {
+    public let title: String // Header title text
+    public var icon: HeaderIcon? // Optional title icon
+    public let sizeType: SectionSizeType // Header size / font style
+    public var buttonTypes: [TitleForSectionButtonType] // Action buttons displayed on the right
+}
+
+```
+ ### Configure
+```swift
+ header.configure(with: .init(
+            title: item.title,
+            icon: item.icon,
+            sizeType: item.sizeType,
+            buttonTypes: item.buttonTypes)) { [weak self] tappedType in
+                guard let self else { return }
+                source.onTappedTitleButton(buttonType: tappedType, section: indexPath.section)
+            }
 ```
 ---
 
@@ -63,14 +96,8 @@ public protocol GenericCollectionDataSourceProtocol {
 ### Default Implementations
 
 ```swift
-public extension GenericCollectionDataSourceProtocol {
-    func titleForSection(at section: Int) -> (
-        title: String,
-        sizeType: SectionSizeType,
-        buttonType: [TitleForSectionButtonType]?
-    ) { ("", .small, nil) }
-    
-    func onTappedTitleButton(buttonType: TitleForSectionButtonType, section: Int) { }
+func titleForSection(at section: Int) -> HeaderViewItem
+func onTappedTitleButton(buttonType: TitleForSectionButtonType, section: Int) { }
 }
 ```
 
