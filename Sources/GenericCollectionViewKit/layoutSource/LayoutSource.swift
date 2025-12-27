@@ -70,8 +70,8 @@ public struct LayoutSource  {
         interItemSpacing: CGFloat,
         interGroupSpacing: CGFloat,
         scrollDirection: ScrollDirection,
-        pinToVisibleBounds:Bool,
-        zIndex:Int,
+        isSticky:Bool = false
+      
     ) {
         self.groupOrientation = groupOrientation
         self.itemSize = itemSize
@@ -80,8 +80,7 @@ public struct LayoutSource  {
         self.interItemSpacing = interItemSpacing
         self.interGroupSpacing = interGroupSpacing
         self.scrollDirection = scrollDirection
-        self.pinToVisibleBounds = pinToVisibleBounds
-        self.zIndex = zIndex
+        self.isSticky = isSticky
     }
     
     let groupOrientation: ScrollDirection
@@ -95,7 +94,7 @@ public struct LayoutSource  {
     let interItemSpacing: CGFloat
     let interGroupSpacing: CGFloat
     let scrollDirection: ScrollDirection
-    let pinToVisibleBounds:Bool
-    let zIndex:Int
+    let isSticky:Bool
+   
     
 }

@@ -26,7 +26,9 @@ public enum LayoutSourceTeamplate {
                 sectionInsets: (top: 10, leading: 10, bottom: 10, trailing: 10),
                 interItemSpacing: 10,
                 interGroupSpacing: 10,
-                scrollDirection: .horizontal
+                scrollDirection: .horizontal,
+                isSticky: false
+                
             )
             
         case .verticalTwoPerRow:
@@ -38,7 +40,9 @@ public enum LayoutSourceTeamplate {
                 sectionInsets: (top: 10, leading: 5, bottom: 10, trailing: 5),
                 interItemSpacing: 5,
                 interGroupSpacing: 8,
-                scrollDirection: .vertical
+                scrollDirection: .vertical,
+                isSticky: false
+                
             )
             
         case .none:
@@ -50,7 +54,8 @@ public enum LayoutSourceTeamplate {
                 sectionInsets: (top: 0, leading: 0, bottom: 0, trailing: 0),
                 interItemSpacing: 0,
                 interGroupSpacing: 0,
-                scrollDirection: .vertical
+                scrollDirection: .vertical,
+                isSticky:  false
             )
         }
     }

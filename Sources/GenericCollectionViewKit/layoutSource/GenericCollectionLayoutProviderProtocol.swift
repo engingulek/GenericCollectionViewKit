@@ -117,7 +117,10 @@ public class GenericCollectionLayoutProvider<Source: GenericCollectionLayoutProv
                 alignment: .top
             )
             section.boundarySupplementaryItems = [sectionHeader]
-            
+            if layoutSource.isSticky {
+                sectionHeader.pinToVisibleBounds = true
+                sectionHeader.zIndex = 2
+            }
             return section
         }
     }
