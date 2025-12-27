@@ -69,7 +69,9 @@ public struct LayoutSource  {
         sectionInsets: (top: CGFloat, leading: CGFloat, bottom: CGFloat, trailing: CGFloat),
         interItemSpacing: CGFloat,
         interGroupSpacing: CGFloat,
-        scrollDirection: ScrollDirection
+        scrollDirection: ScrollDirection,
+        pinToVisibleBounds:Bool,
+        zIndex:Int,
     ) {
         self.groupOrientation = groupOrientation
         self.itemSize = itemSize
@@ -78,6 +80,8 @@ public struct LayoutSource  {
         self.interItemSpacing = interItemSpacing
         self.interGroupSpacing = interGroupSpacing
         self.scrollDirection = scrollDirection
+        self.pinToVisibleBounds = pinToVisibleBounds
+        self.zIndex = zIndex
     }
     
     let groupOrientation: ScrollDirection
@@ -91,4 +95,7 @@ public struct LayoutSource  {
     let interItemSpacing: CGFloat
     let interGroupSpacing: CGFloat
     let scrollDirection: ScrollDirection
+    let pinToVisibleBounds:Bool
+    let zIndex:Int
+    
 }
