@@ -279,7 +279,7 @@ let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout
 ```swift
 
 dependencies: [
-.package(url: "https://github.com/engingulek/GenericCollectionViewKit.git", from: "0.0.2")
+.package(url: "https://github.com/engingulek/GenericCollectionViewKit.git", from: "0.0.7")
 ]
 
 ```
